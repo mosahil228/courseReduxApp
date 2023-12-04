@@ -2,25 +2,32 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import noItem from "../images/noItem.svg"
+// import { useEffect,useState } from 'react';
 
 const EnrollCourses = () => {
+    // const [uData,setUData]=useState([]);
     const enrolledCourse = useSelector((state) => {
         return state.user;
     })
     
+    let jsonObject = enrolledCourse.enrollCourse.map(JSON.stringify);
+    let uniqueSet = new Set(jsonObject);
+    let uniqueArray = Array.from(uniqueSet).map(JSON.parse);
  
+    
+   
 
     return (
         <>
 
             <section className='courseSection'>
-                <h4 >All<span>0{enrolledCourse?.enrollCourse?.length}</span></h4>
+                <h4 >All<span>0{uniqueArray.length}</span></h4>
 
-               {enrolledCourse?.enrollCourse?.length===0&& <div className='noItem' style={{display:"flex",justifyContent:"center"}}>
+               {uniqueArray.length===0&& <div className='noItem' style={{display:"flex",justifyContent:"center"}}>
                     <img src={noItem} alt='noitem' width={"250px"} height={"100%"}/>
                 </div>}
 
-                {enrolledCourse?.enrollCourse?.map((data, index) => {
+                {uniqueArray.map((data, index) => {
                     return (
                         data.map((cdata, index) => {
                         return (

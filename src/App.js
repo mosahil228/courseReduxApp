@@ -22,10 +22,10 @@ const App = () => {
     return state.user;
 })
   
-  const clientID="437789240486-2on50fr1e9tvaop430k9fh3bgm97q4li.apps.googleusercontent.com"
   return (
     <div style={{background:mode.darkMode.setDark?mode.darkMode.bgDark:mode.darkMode.bgLight}}>
-    <GoogleOAuthProvider clientId={clientID}>
+    
+    <GoogleOAuthProvider clientId={`${process.env.REACT_APP_MY_KEY}`}>
       <BrowserRouter >
         <LoadingBar
           color='#1778F2'
