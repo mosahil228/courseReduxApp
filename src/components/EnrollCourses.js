@@ -34,10 +34,6 @@ const EnrollCourses = () => {
                                             <h5><span>Course</span></h5>
                                             <h5>{cdata.coursename}</h5>
                                             <p>{cdata.lesson}</p>
-                                            {/* <div className='progress'>
-                                                <div className="innerProgress" style={{width:`${(enrolledCourse.complete.length*100/enrolledCourse.booleanBox).toFixed(0)}%`}}></div>
-                                            </div>
-                                            <p>{(enrolledCourse.complete.length*100/enrolledCourse.booleanBox).toFixed(0)}% completed</p> */}
                                         </div>
                                     </div>
                                     <div className='courseRightDetail'>

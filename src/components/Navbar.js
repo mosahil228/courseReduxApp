@@ -59,7 +59,7 @@ const Navbar = () => {
         }))
 
     }
-    console.log(userData.darkMode);
+    
 
 
 

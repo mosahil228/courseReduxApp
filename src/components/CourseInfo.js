@@ -22,21 +22,11 @@ const CourseInfo = ({ setProgress }) => {
     const styleCss = useSelector((state) => {
         return state.user;
     })
-    console.log(styleCss.enrollCourse);
 
     useEffect(() => {
         const res = Data.filter((data) => {
             return data.url === name;
         })
-        // const res3=styleCss.enrollCourse.map((data) => {
-        //     return (
-        //         data.some((data) => {          
-        //             return data.url===name;;
-        //         })
-        //     )
-           
-        // })
-
         setProgress(40);
         setTimeout(() => {
             setProgress(100)
