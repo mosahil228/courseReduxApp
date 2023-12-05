@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { Data } from '../apidata/Data';
 import { FaChevronDown } from "react-icons/fa";
 import { IoVideocamOutline } from "react-icons/io5";
-import { setHeight, setRotate, setEnrollStatus,setCourseData,setCourseDataInfo,setEnrollCourse } from '../store/slices/UserSlice';
+import { setHeight, setRotate, setEnrollStatus,setCourseData,setCourseDataInfo,setEnrollCourse ,setUrl} from '../store/slices/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,6 +20,9 @@ const CourseInfo = ({ setProgress }) => {
 
     // styleCSs from redux
     const styleCss = useSelector((state) => {
+        return state.user;
+    })
+    const data = useSelector((state) => {
         return state.user;
     })
 
@@ -45,6 +48,7 @@ const CourseInfo = ({ setProgress }) => {
         dispatch(setHeight())
 
     }
+        
     //enrolling course functionality
     const enrollHandle = () => {
         if (styleCss.setUser[0] === null) {
@@ -57,6 +61,12 @@ const CourseInfo = ({ setProgress }) => {
             if (enroll === "Go to DashBoard") {
                 navigate('/'+name+'/episodes')
             } else if (enroll === "ENROLL FOR FREE") {
+                dispatch(setUrl({
+                    urlData: data?.courseData?.slice(0, 1).map((url) => url.link),
+                    urlDescription: data?.courseData?.slice(0, 1).map((url) => url.description),
+                    urlEpisode: data?.courseData?.slice(0, 1).map((url) => url.episode),
+                    urlTitle: data?.courseData?.slice(0, 1).map((url) => url.coursename),
+                }))
                 setTimeout(() => {
                     setEnroll("Go to DashBoard")
                     toast.success('Enrolled Successfully', {
@@ -85,6 +95,7 @@ const CourseInfo = ({ setProgress }) => {
 
     return (
         <>
+       
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
@@ -95,7 +106,7 @@ const CourseInfo = ({ setProgress }) => {
                 pauseOnHover
                 closeButton={false}
                 theme="light"
-                style={{ width: "fit-content", fontSize: "15px" }}
+                style={{ width: "100%", fontSize: "15px",display:"flex",justifyContent:"center",top:"1em" }}
             />
             <section className='infoSection'>
                 <div className='courseInfoContainer'>

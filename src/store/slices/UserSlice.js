@@ -15,7 +15,8 @@ const userSlice = createSlice({
         complete: 1,
         booleanBox: 1,
         query:"",
-        darkMode:{}
+        darkMode:{},
+        url:{}
     },
     reducers: {
         setHeight: (state, action) => {
@@ -67,8 +68,11 @@ const userSlice = createSlice({
         setDarkMode: (state, action) => {
             state.darkMode = action.payload;
         },
+        setUrl: (state, action) => {
+            state.url = action.payload;
+        },
 
     }
 })
 export default userSlice.reducer;
-export const { setHeight, setRotate, setUserData, deleteUserData, setEnrollStatus, setCourseData, setCourseDataInfo, setEnrollCourse, setComplete, setBoolean ,setAllCourses,setQuery,setDarkMode} = userSlice.actions;
+export const { setHeight, setRotate, setUserData, deleteUserData, setEnrollStatus, setCourseData, setCourseDataInfo, setEnrollCourse, setComplete, setBoolean ,setAllCourses,setQuery,setDarkMode,setUrl} = userSlice.actions;

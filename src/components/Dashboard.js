@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { setHeight, setRotate ,setComplete,setBoolean} from '../store/slices/UserSlice';
+import { setHeight, setRotate ,setComplete,setBoolean,setCourseData,setCourseDataInfo,setUrl} from '../store/slices/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactPlayer from 'react-player/youtube'
 import { IoVideocamOutline } from "react-icons/io5";
 import { FaChevronDown, FaAngleLeft } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 import { TbProgress } from "react-icons/tb";
+import { Data } from '../apidata/Data';
 const Dashboard = ({ setProgress }) => {
 
     let navigate = useNavigate();
+    const params = useParams();
+    const { name } = params;
+    let sName=name.split('/');
+    let newUrl=sName[0];
+    // console.log(newUrl);
+
 
     const data = useSelector((state) => {
         return state.user;
@@ -21,26 +28,28 @@ const Dashboard = ({ setProgress }) => {
     const[query,setQuery]=useState("")
 
     const [booleanArray,setBooleanArray]=useState(data?.courseData?.map(()=>false))
-    const [url, setUrl] = useState({
-        urlData: data?.courseData?.slice(0, 1).map((url) => url.link),
-        urlDescription: data?.courseData?.slice(0, 1).map((url) => url.description),
-        urlEpisode: data?.courseData?.slice(0, 1).map((url) => url.episode),
-        urlTitle: data?.courseData?.slice(0, 1).map((url) => url.coursename),
-    }
-    );
+   
     const dispatch = useDispatch();
     const toggleBar = () => {
         dispatch(setRotate())
         dispatch(setHeight())
 
     }
+    // const getVideo = (url) => {
+    //     setUrl({
+    //         urlData: url.link,
+    //         urlDescription: url.description,
+    //         urlEpisode: url.episode,
+    //         urlTitle: url.coursename
+    //     })
+    // }
     const getVideo = (url) => {
-        setUrl({
+        dispatch(setUrl({
             urlData: url.link,
             urlDescription: url.description,
             urlEpisode: url.episode,
             urlTitle: url.coursename
-        })
+        }))
     }
 
     
@@ -52,15 +61,31 @@ const Dashboard = ({ setProgress }) => {
         });
       };
 
+ 
+
 
     useEffect(() => {
-        dispatch(setComplete(booleanArray.filter((data)=> data===true)))
-        dispatch(setBoolean(booleanArray.length))
+        const res = Data.filter((data) => {
+            return data.url === newUrl;
+        })
         setProgress(40);
         setTimeout(() => {
             setProgress(100)
         }, 200)
-    }, [setProgress,booleanArray,dispatch])
+        const res2 = res.flatMap(({ syllabus }) => syllabus.filter(({ episode }) => episode));
+        dispatch(setCourseData(res2));
+        dispatch(setCourseDataInfo(res));
+        dispatch(setComplete(booleanArray.filter((data)=> data===true)))
+        dispatch(setBoolean(booleanArray.length))
+       
+        setProgress(40);
+        setTimeout(() => {
+            setProgress(100)
+        }, 200)
+        
+    }, [setProgress,booleanArray,dispatch,newUrl])
+  
+    
 
 
 
@@ -72,13 +97,13 @@ const Dashboard = ({ setProgress }) => {
                     <div className='videoFrame'>
                         <div>
                             <div className='videoNav'>
-                                <p style={{color:data.darkMode.setDark?data.darkMode.textLight:""}}><span onClick={() => navigate(-1)}><FaAngleLeft /></span>{url.urlTitle}</p>
+                                <p style={{color:data.darkMode.setDark?data.darkMode.textLight:""}}><span onClick={() => navigate(-1)}><FaAngleLeft /></span>{data?.url?.urlTitle}</p>
                             </div>
-                            <ReactPlayer url={url.urlData} controls className="videoPlayer" />
+                            <ReactPlayer url={data?.url?.urlData} controls className="videoPlayer" />
                             <div className='video-description'>
                                 <p style={{color:data.darkMode.setDark?data.darkMode.textLight:""}}>About</p>
-                                <h1 style={{color:data.darkMode.setDark?data.darkMode.textLight:""}}>{url.urlEpisode}</h1>
-                                <h6 style={{color:data.darkMode.setDark?data.darkMode.pColorDark:""}}>{url.urlDescription}</h6>
+                                <h1 style={{color:data.darkMode.setDark?data.darkMode.textLight:""}}>{data?.url?.urlEpisode}</h1>
+                                <h6 style={{color:data.darkMode.setDark?data.darkMode.pColorDark:""}}>{data?.url?.urlDescription}</h6>
                             </div>
                         </div>
 
